@@ -3,7 +3,7 @@
 Plugin Name: MyAnimeList Widget
 Plugin URI: http://vievern.com/wordpress_plugins
 Description: Widget that shows your last updates on http://myanimelist.net (parsing)
-Version: 1.0
+Version: 1.1
 Author: Vievern
 Author URI: http://vievern.com/
 */
@@ -19,7 +19,7 @@ $parstype = get_option('vievs_mal_pars_type');
     echo (empty($title)? 'MAL Last List Updates' : $title);
     echo $after_title;
 
-if($parstype == 'opd'){
+if($parstype != 'always'){
 $parslast = get_option('vievs_mal_pars_last');
 if($parslast != date('d-m-Y')){
 $startpars = true;
@@ -35,6 +35,8 @@ else
 $startpars = true;
 }
 
+$mal_dir = plugin_dir_path(__FILE__).'cache.html';
+
 if($startpars){
 $data = file_get_contents('http://myanimelist.net/profile/'.$username);
 
@@ -44,20 +46,34 @@ $html = str_replace('<a href=','<a target="_blank" href=',$matches[1]);
 $html = str_replace('width="26"','',$html);
 $html = str_replace(array('>add<','>edit<'),'><',$html);
 
-if($parstype != 'always'){
+if($parstype == 'opd'){
 update_option('vievs_mal_pars_text', $html);
+update_option('vievs_mal_pars_last', date('d-m-Y'));
+}
+else if($parstype == 'opdf'){
+unlink($mal_dir);
+$f = fopen($mal_dir,"w");
+fwrite($f,$html);
+fclose($f);
 update_option('vievs_mal_pars_last', date('d-m-Y'));
 }
 
 }
 else
 {
+
+if($parstype == 'opd'){
 $html = get_option('vievs_mal_pars_text');
+}
+elseif($parstype == 'opdf'){
+$html = file_get_contents($mal_dir);
+}
+
 }
 
 echo '<style>'.get_option('vievs_mal_widget_css').'</style>
 <div id="mal_parsed">'.$html.'</div>';	
-	
+unset($html);
     echo $after_widget;
 
 }
@@ -84,7 +100,8 @@ Your MAL username:<br>
 Parsing:<br>
 <select style="width:200px;" name="vievs_mal_pars_type">
 <? $vmalp = get_option('vievs_mal_pars_type'); ?>
-<option value="opd"<? if($vmalp == 'opd') echo ' selected'; ?>>Once per day</option>
+<option value="opd"<? if($vmalp == 'opd') echo ' selected'; ?>>Once per day (option)</option>
+<option value="opdf"<? if($vmalp == 'opdf') echo ' selected'; ?>>Once per day (file)</option> <? // 1.1 ?>
 <option value="always"<? if($vmalp == 'always') echo ' selected'; ?>>Always</option>
 <? unset($vmalp); ?>
 </select>

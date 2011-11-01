@@ -1,7 +1,7 @@
 === MyAnimeList Widget ===
 Contributors: Vievern
 Donate link: http://www.vievern.com/wordpress_plugins
-Tags: myanimelist, mal, anime, parsing, myanimelist.net, widget
+Tags: myanimelist, mal, anime, parsing, myanimelist.net, widget, feed, rss
 Requires at least: 3.0
 Tested up to: 3.2.1
 Stable tag: trunk
@@ -13,10 +13,11 @@ Plugin adds widget that shows your last updates on http://myanimelist.net (parsi
 Plugin adds widget that shows your last updates on http://myanimelist.net (parsing)
 You can choose what type of parsing use:
 
-* Once Per Day - Caching your updates in option in WP-database, parsing only one time per day.
+* Once Per Day (option) - Caching your updates in option in WP-database, parsing only one time per day.
+* Once Per Day (file) - Caching your updates in file `cache.html` in plugin-directory, parsing only one time per day.
 * Always - Parsing every time when widget showing.
 
-Also, you can config widget's CSS (from widget-control) with `#mal_parsed` parent-style and change widget's name.
+Also, you can config widget's CSS (from widget-control) with `#mal_parsed` parent-style and change widget title.
 
 == Installation ==
 
@@ -48,10 +49,16 @@ Go to `Widgets` menu in wp-admin and configurate plugin (You must change usernam
 
 == Changelog ==
 
+= 1.1 =
+* Added file-caching
+
 = 1.0 =
 * First release.
 
 == Upgrade Notice ==
+
+= 1.1 =
+If you don't like option-caching - update plugin for file-caching. You must change your MAL username again, if you update plugin automatically.
 
 = 1.0 =
 This version is first release of this plugin.
