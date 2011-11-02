@@ -1,7 +1,7 @@
 === MyAnimeList Widget ===
 Contributors: Vievern
 Donate link: http://www.vievern.com/wordpress_plugins
-Tags: myanimelist, mal, anime, parsing, myanimelist.net, widget, feed, rss
+Tags: myanimelist, mal, anime, parsing, myanimelist.net, widget, feed
 Requires at least: 3.0
 Tested up to: 3.2.1
 Stable tag: trunk
