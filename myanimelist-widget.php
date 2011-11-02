@@ -113,7 +113,7 @@ Widget css:<br>
 
 function vievs_mal_activate(){
 update_option('vievs_mal_widget_title','MAL Last List Updates');
-update_option('vievs_mal_widget_username','Xinil'); // Default: MyAnimeList's Developer - Xinil
+update_option('vievs_mal_widget_username','Xinil'); //  Default: MyAnimeList's Developer - Xinil
 update_option('vievs_mal_widget_css','#mal_parsed img {
 border: 1px solid black;
 max-width: 30px;
