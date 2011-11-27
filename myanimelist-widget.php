@@ -3,7 +3,7 @@
 Plugin Name: MyAnimeList Widget
 Plugin URI: http://vievern.com/wordpress_plugins
 Description: Widget that shows your last updates on http://myanimelist.net (parsing)
-Version: 1.1
+Version: 1.1.1
 Author: Vievern
 Author URI: http://vievern.com/
 */
@@ -43,7 +43,7 @@ $data = file_get_contents('http://myanimelist.net/profile/'.$username);
 preg_match( '#Last List Updates</strong></div>(.+?)<div class="spaceit_pad"><a href="http://myanimelist.net/history/'.$username.'">#is', $data, $matches );
 
 $html = str_replace('<a href=','<a target="_blank" href=',$matches[1]);
-$html = str_replace('width="26"','',$html);
+$html = str_replace(array('width="26"','style="padding-left: 0;"'),'',$html);
 $html = str_replace(array('>add<','>edit<'),'><',$html);
 
 if($parstype == 'opd'){
