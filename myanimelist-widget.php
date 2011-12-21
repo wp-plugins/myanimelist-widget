@@ -3,7 +3,7 @@
 Plugin Name: MyAnimeList Widget
 Plugin URI: http://vievern.com/wordpress_plugins
 Description: Widget that shows your last updates on http://myanimelist.net (parsing)
-Version: 1.1.1
+Version: 1.2
 Author: Vievern
 Author URI: http://vievern.com/
 */
@@ -38,11 +38,24 @@ $startpars = true;
 $mal_dir = plugin_dir_path(__FILE__).'cache.html';
 
 if($startpars){
+
+if(get_option('vievs_mal_pars_conn') == 'fgc'){
 $data = file_get_contents('http://myanimelist.net/profile/'.$username);
+}
+else
+{
+$chandler = curl_init();
+curl_setopt($chandler, CURLOPT_URL, 'http://myanimelist.net/profile/'.$username);
+curl_setopt($chandler, CURLOPT_RETURNTRANSFER, true);
+$data = curl_exec($chandler);
+curl_close($chandler);
+}
 
 preg_match( '#Last List Updates</strong></div>(.+?)<div class="spaceit_pad"><a href="http://myanimelist.net/history/'.$username.'">#is', $data, $matches );
+unset($data);
 
 $html = str_replace('<a href=','<a target="_blank" href=',$matches[1]);
+unset($matches);
 $html = str_replace(array('width="26"','style="padding-left: 0;"'),'',$html);
 $html = str_replace(array('>add<','>edit<'),'><',$html);
 
@@ -92,6 +105,9 @@ if (!empty($_REQUEST['vievs_mal_pars_type'])) {
 if (!empty($_REQUEST['vievs_mal_widget_css'])) { 
         update_option('vievs_mal_widget_css', $_REQUEST['vievs_mal_widget_css']);
 }
+if (!empty($_REQUEST['vievs_mal_pars_conn'])) { 
+        update_option('vievs_mal_pars_conn', $_REQUEST['vievs_mal_pars_conn']);
+}
 ?>
 Widget title:<br>
 <input style="width:200px;" type="text" name="vievs_mal_widget_title" value="<?= get_option('vievs_mal_widget_title'); ?>" /><br /><br />
@@ -106,6 +122,16 @@ Parsing:<br>
 <? unset($vmalp); ?>
 </select>
 <br /><br />
+
+Connect:<br> <? // 1.2 ?>
+<select style="width:200px;" name="vievs_mal_pars_conn">
+<? $vmalc = get_option('vievs_mal_pars_conn'); ?>
+<option value="fgc"<? if($vmalc == 'fgc') echo ' selected'; ?>>File_get_content</option>
+<option value="curl"<? if($vmalc == 'curl') echo ' selected'; ?>>Curl</option>
+<? unset($vmalc); ?>
+</select>
+<br /><br />
+
 Widget css:<br>
 <textarea style="width:200px;" name="vievs_mal_widget_css"><?= get_option('vievs_mal_widget_css'); ?></textarea><br />
 <?
@@ -145,6 +171,7 @@ font-style: italic
 update_option('vievs_mal_pars_last','01-01-2001');
 update_option('vievs_mal_pars_type','opd');
 update_option('vievs_mal_pars_text','Not yet parsed');
+update_option('vievs_mal_pars_conn','fgc');
 }
 function vievs_mal_deactivate(){
 delete_option('vievs_mal_widget_title');
@@ -153,6 +180,7 @@ delete_option('vievs_mal_widget_css');
 delete_option('vievs_mal_pars_last');
 delete_option('vievs_mal_pars_type');
 delete_option('vievs_mal_pars_text');
+delete_option('vievs_mal_pars_conn');
 }
 
 register_sidebar_widget('MAL Last List Updates', 'vievs_mal_widget');

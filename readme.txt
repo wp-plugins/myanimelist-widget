@@ -3,7 +3,7 @@ Contributors: Vievern
 Donate link: http://www.vievern.com/wordpress_plugins
 Tags: myanimelist, mal, anime, parsing, myanimelist.net, widget, feed, manga
 Requires at least: 3.0
-Tested up to: 3.2.1
+Tested up to: 3.3
 Stable tag: trunk
 
 Plugin adds widget that shows your last updates on http://myanimelist.net (parsing)
@@ -48,6 +48,11 @@ Plugin adds widget that shows your last updates on http://myanimelist.net (parsi
 Go to `Widgets` menu in wp-admin and configurate plugin (You must change username. Maybe css and title too).
 
 == Changelog ==
+
+= 1.2 =
+* Added curl-connection option. Thanks [Grimneko](http://grimneko.de/) for it.
+* Added some tweaks for speed-up
+* Tested on Wordpress 3.3
 
 = 1.1.1 =
 * Some bugs fixed
